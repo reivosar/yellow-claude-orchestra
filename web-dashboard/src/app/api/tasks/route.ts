@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs/promises'
+import { generateTaskTitle, isValidTitle } from '@/utils/ai'
 
 // タスクリクエストの型定義
 interface TaskRequest {
@@ -103,13 +104,25 @@ export async function POST(request: NextRequest) {
     const body: TaskRequest = await request.json()
     console.log('POST /api/tasks - Request body:', JSON.stringify(body, null, 2))
     
-    // バリデーション
-    if (!body.title || !body.projectId) {
-      console.log('Validation failed - missing title or projectId:', { title: body.title, projectId: body.projectId })
+    // プロジェクトIDのバリデーション
+    if (!body.projectId) {
+      console.log('Validation failed - missing projectId:', { projectId: body.projectId })
       return NextResponse.json(
-        { error: 'タイトル、プロジェクトIDは必須です' },
+        { error: 'プロジェクトIDは必須です' },
         { status: 400 }
       )
+    }
+    
+    // タイトルが無効な場合はAIで生成
+    let title = body.title
+    if (!title || !isValidTitle(title, body.description || '')) {
+      console.log('Title is invalid or missing, generating with AI...')
+      if (body.description) {
+        title = await generateTaskTitle(body.description)
+        console.log('Generated title:', title)
+      } else {
+        title = '新しいタスク'
+      }
     }
     
     // プロジェクトの存在確認
@@ -129,6 +142,7 @@ export async function POST(request: NextRequest) {
     const task: Task = {
       id: `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       ...body,
+      title, // AI生成されたタイトルを使用
       status: 'pending',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()

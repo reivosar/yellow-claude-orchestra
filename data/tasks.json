@@ -352,6 +352,20 @@
       "createdAt": "2025-06-17T14:25:38.246Z",
       "updatedAt": "2025-06-17T23:25:39.940972",
       "assignedAgent": "task-processor"
+    },
+    {
+      "id": "task-1750190592413-cpz8e673y",
+      "title": "うごかない",
+      "description": "",
+      "projectId": "project-1750099751963",
+      "priority": "medium",
+      "tags": [],
+      "requirements": "",
+      "acceptanceCriteria": "",
+      "status": "in_progress",
+      "createdAt": "2025-06-17T20:03:12.413Z",
+      "updatedAt": "2025-06-18T05:03:28.589511",
+      "assignedAgent": "task-processor"
     }
   ]
 }

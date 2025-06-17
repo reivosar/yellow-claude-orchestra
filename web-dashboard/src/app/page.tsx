@@ -208,7 +208,7 @@ function DashboardContent() {
   }
 
   // クイックタスク作成
-  const handleQuickTaskSubmit = async (taskData: { title: string; description: string }) => {
+  const handleQuickTaskSubmit = async (taskData: { title?: string; description: string }) => {
     console.log('=== QuickTask送信開始 ===')
     console.log('handleQuickTaskSubmit呼び出し:', taskData)
     console.log('選択されたプロジェクト:', selectedProject)
@@ -228,7 +228,7 @@ function DashboardContent() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          title: taskData.title,
+          title: taskData.title || taskData.description, // タイトルが無い場合は説明を使用（APIでAI生成される）
           description: taskData.description,
           projectId: selectedProject.id,
           priority: 'medium',
