@@ -1,0 +1,32 @@
+# Logs
+logs/
+*.log
+
+# Runtime files
+*.pid
+communication/agent_status.json
+communication/messages/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+
+# Next.js
+web-dashboard/.next/
+web-dashboard/node_modules/
+web-dashboard/out/
+web-dashboard/.env*.local
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
