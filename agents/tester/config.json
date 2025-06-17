@@ -1,0 +1,14 @@
+{
+  "role": "tester",
+  "priority": "medium",
+  "auto_start": false,
+  "startup_delay": 15,
+  "memory_limit": "3GB",
+  "timeout": 450,
+  "retry_count": 2,
+  "working_directory": "./agents/tester",
+  "environment_variables": {
+    "AGENT_ROLE": "tester",
+    "LOG_LEVEL": "INFO"
+  }
+}

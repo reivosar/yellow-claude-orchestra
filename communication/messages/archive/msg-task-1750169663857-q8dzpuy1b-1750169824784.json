@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750169663857-q8dzpuy1b-1750169824784",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T14:17:04.784Z",
+  "data": {
+    "taskId": "task-1750169663857-q8dzpuy1b",
+    "message": "github status確認",
+    "action": "append_message"
+  }
+}

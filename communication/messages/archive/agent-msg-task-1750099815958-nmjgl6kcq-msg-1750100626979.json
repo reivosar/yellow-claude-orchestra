@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750100626979",
+  "from": "producer",
+  "to": "director",
+  "type": "task_completion",
+  "data": {
+    "result": "タスク 'なにもねえが' を処理しました。\n説明: ",
+    "message": "タスク 'なにもねえが' を処理しました。\n説明: "
+  },
+  "timestamp": "2025-06-17T04:03:46.979351"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "msg-1750128164447",
+  "from": "producer",
+  "to": "director",
+  "type": "message_received",
+  "data": {
+    "message": "こんにちは"
+  },
+  "timestamp": "2025-06-17T11:42:44.447782"
+}

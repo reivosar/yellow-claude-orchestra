@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750102640288",
+  "from": "producer",
+  "to": "director",
+  "type": "task_completion",
+  "data": {
+    "result": "Hello, World!",
+    "message": "Hello, World!"
+  },
+  "timestamp": "2025-06-17T04:37:20.288201"
+}

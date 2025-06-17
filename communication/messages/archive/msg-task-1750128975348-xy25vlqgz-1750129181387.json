@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750128975348-xy25vlqgz-1750129181387",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T02:59:41.387Z",
+  "data": {
+    "taskId": "task-1750128975348-xy25vlqgz",
+    "message": "今度はちゃんと返して",
+    "action": "append_message"
+  }
+}

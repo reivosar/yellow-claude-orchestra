@@ -1,0 +1,14 @@
+{
+  "role": "analyst",
+  "priority": "low",
+  "auto_start": false,
+  "startup_delay": 20,
+  "memory_limit": "2GB",
+  "timeout": 240,
+  "retry_count": 1,
+  "working_directory": "./agents/analyst",
+  "environment_variables": {
+    "AGENT_ROLE": "analyst",
+    "LOG_LEVEL": "INFO"
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "system": {
+    "name": "Yellow Claude Orchestra",
+    "version": "1.0.0",
+    "description": "複数のClaude Codeエージェントを協調動作させるオーケストレーションシステム",
+    "communication_dir": "./communication",
+    "logs_dir": "./logs",
+    "max_agents": 10,
+    "message_retention_hours": 24,
+    "auto_cleanup": true
+  },
+  "agents": [
+    {
+      "name": "conductor",
+      "type": "claude-code",
+      "description": "オーケストラの指揮者 - 全体調整とタスク管理を担当",
+      "capabilities": [
+        "orchestration",
+        "task_management", 
+        "coordination",
+        "planning",
+        "monitoring"
+      ],
+      "config": {
+        "role": "conductor",
+        "priority": "high",
+        "auto_start": true,
+        "startup_delay": 0,
+        "memory_limit": "2GB",
+        "timeout": 300,
+        "retry_count": 3,
+        "working_directory": "./agents/conductor",
+        "environment_variables": {
+          "AGENT_ROLE": "conductor",
+          "LOG_LEVEL": "INFO"
+        }
+      },
+      "communication": {
+        "listen_to": ["system", "all"],
+        "can_broadcast": true,
+        "priority_messages": true,
+        "message_types": [
+          "task_assignment",
+          "status_request", 
+          "coordination",
+          "system_command"
+        ]
+      }
+    },
+    {
+      "name": "developer",
+      "type": "claude-code",
+      "description": "開発担当エージェント - コード作成、実装、デバッグを担当",
+      "capabilities": [
+        "coding",
+        "debugging",
+        "testing",
+        "implementation",
+        "problem_solving"
+      ],
+      "config": {
+        "role": "developer",
+        "priority": "high",
+        "auto_start": true,
+        "startup_delay": 5,
+        "memory_limit": "4GB",
+        "timeout": 600,
+        "retry_count": 2,
+        "working_directory": "./agents/developer",
+        "environment_variables": {
+          "AGENT_ROLE": "developer",
+          "LOG_LEVEL": "DEBUG"
+        }
+      },
+      "communication": {
+        "listen_to": ["conductor", "reviewer"],
+        "can_broadcast": false,
+        "priority_messages": false,
+        "message_types": [
+          "code_request",
+          "implementation_task",
+          "bug_fix",
+          "test_request"
+        ]
+      }
+    },
+    {
+      "name": "reviewer",
+      "type": "claude-code",
+      "description": "レビュー担当エージェント - コード品質管理とドキュメント作成",
+      "capabilities": [
+        "code_review",
+        "quality_assurance",
+        "documentation",
+        "best_practices",
+        "security_check"
+      ],
+      "config": {
+        "role": "reviewer",
+        "priority": "medium",
+        "auto_start": false,
+        "startup_delay": 10,
+        "memory_limit": "2GB", 
+        "timeout": 300,
+        "retry_count": 2,
+        "working_directory": "./agents/reviewer",
+        "environment_variables": {
+          "AGENT_ROLE": "reviewer",
+          "LOG_LEVEL": "INFO"
+        }
+      },
+      "communication": {
+        "listen_to": ["conductor", "developer"],
+        "can_broadcast": false,
+        "priority_messages": false,
+        "message_types": [
+          "review_request",
+          "documentation_request",
+          "quality_check",
+          "security_audit"
+        ]
+      }
+    },
+    {
+      "name": "tester",
+      "type": "claude-code",
+      "description": "テスト専門エージェント - 自動テスト作成と実行",
+      "capabilities": [
+        "test_creation",
+        "test_execution",
+        "test_automation",
+        "performance_testing",
+        "integration_testing"
+      ],
+      "config": {
+        "role": "tester",
+        "priority": "medium",
+        "auto_start": false,
+        "startup_delay": 15,
+        "memory_limit": "3GB",
+        "timeout": 450,
+        "retry_count": 2,
+        "working_directory": "./agents/tester",
+        "environment_variables": {
+          "AGENT_ROLE": "tester",
+          "LOG_LEVEL": "INFO"
+        }
+      },
+      "communication": {
+        "listen_to": ["conductor", "developer"],
+        "can_broadcast": false,
+        "priority_messages": false,
+        "message_types": [
+          "test_creation_request",
+          "test_execution_request",
+          "performance_test",
+          "integration_test"
+        ]
+      }
+    },
+    {
+      "name": "analyst",
+      "type": "claude-code",
+      "description": "分析専門エージェント - データ分析とレポート作成",
+      "capabilities": [
+        "data_analysis",
+        "reporting",
+        "metrics_collection",
+        "performance_analysis",
+        "trend_analysis"
+      ],
+      "config": {
+        "role": "analyst",
+        "priority": "low",
+        "auto_start": false,
+        "startup_delay": 20,
+        "memory_limit": "2GB",
+        "timeout": 240,
+        "retry_count": 1,
+        "working_directory": "./agents/analyst",
+        "environment_variables": {
+          "AGENT_ROLE": "analyst",
+          "LOG_LEVEL": "INFO"
+        }
+      },
+      "communication": {
+        "listen_to": ["conductor"],
+        "can_broadcast": false,
+        "priority_messages": false,
+        "message_types": [
+          "analysis_request",
+          "report_request",
+          "metrics_collection",
+          "data_processing"
+        ]
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "standard_development",
+      "description": "標準的な開発ワークフロー",
+      "steps": [
+        {
+          "agent": "conductor",
+          "action": "task_planning",
+          "description": "タスクの計画と分割"
+        },
+        {
+          "agent": "developer", 
+          "action": "implementation",
+          "description": "コードの実装",
+          "depends_on": ["task_planning"]
+        },
+        {
+          "agent": "tester",
+          "action": "test_creation",
+          "description": "テストの作成と実行",
+          "depends_on": ["implementation"]
+        },
+        {
+          "agent": "reviewer",
+          "action": "code_review",
+          "description": "コードレビューと品質チェック",
+          "depends_on": ["implementation", "test_creation"]
+        },
+        {
+          "agent": "conductor",
+          "action": "final_coordination",
+          "description": "最終調整と統合",
+          "depends_on": ["code_review"]
+        }
+      ]
+    },
+    {
+      "name": "hotfix_workflow",
+      "description": "緊急修正ワークフロー", 
+      "steps": [
+        {
+          "agent": "conductor",
+          "action": "issue_analysis",
+          "description": "問題の分析と優先度設定"
+        },
+        {
+          "agent": "developer",
+          "action": "hotfix_implementation", 
+          "description": "緊急修正の実装",
+          "depends_on": ["issue_analysis"]
+        },
+        {
+          "agent": "tester",
+          "action": "quick_test",
+          "description": "重要機能のクイックテスト",
+          "depends_on": ["hotfix_implementation"]
+        },
+        {
+          "agent": "conductor",
+          "action": "deploy_coordination",
+          "description": "デプロイの調整",
+          "depends_on": ["quick_test"]
+        }
+      ]
+    }
+  ],
+  "collaboration_rules": {
+    "message_priority": {
+      "system": 1,
+      "high": 2,
+      "medium": 3,
+      "low": 4
+    },
+    "escalation_rules": [
+      {
+        "condition": "no_response_timeout",
+        "timeout_seconds": 60,
+        "action": "escalate_to_conductor"
+      },
+      {
+        "condition": "error_threshold", 
+        "max_errors": 3,
+        "action": "pause_and_notify"
+      }
+    ],
+    "resource_limits": {
+      "max_concurrent_tasks_per_agent": 3,
+      "max_message_queue_size": 100,
+      "max_shared_data_size_mb": 50
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "task-task-1750128536509-jqgy5rwjy",
+  "type": "task_request",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T02:48:56.511Z",
+  "data": {
+    "id": "task-1750128536509-jqgy5rwjy",
+    "title": "レスポンスは必ず返せよ",
+    "description": "",
+    "projectId": "project-1750099751963",
+    "priority": "medium",
+    "tags": [],
+    "requirements": "",
+    "acceptanceCriteria": "",
+    "status": "pending",
+    "createdAt": "2025-06-17T02:48:56.509Z",
+    "updatedAt": "2025-06-17T02:48:56.509Z"
+  }
+}

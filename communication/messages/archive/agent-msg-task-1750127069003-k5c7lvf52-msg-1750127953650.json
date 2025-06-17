@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750127953650",
+  "from": "director",
+  "to": "producer",
+  "type": "task_completion",
+  "data": {
+    "result": "こんにちは！",
+    "message": "こんにちは！"
+  },
+  "timestamp": "2025-06-17T11:39:13.650612"
+}

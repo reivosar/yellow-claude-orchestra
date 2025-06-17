@@ -1,0 +1,22 @@
+{
+  "id": "msg-1750129755244",
+  "from": "director",
+  "to": "actor",
+  "type": "task_execution",
+  "data": {
+    "id": "task-1750129718794-eaqhnya5h",
+    "title": "test clean run",
+    "description": "testing with no loops",
+    "projectId": "project-1750099751963",
+    "priority": "low",
+    "tags": [],
+    "requirements": "",
+    "acceptanceCriteria": "",
+    "status": "in_progress",
+    "createdAt": "2025-06-17T03:08:38.794Z",
+    "updatedAt": "2025-06-17T12:08:40.065912",
+    "startedBy": "task-processor",
+    "progress": 83
+  },
+  "timestamp": "2025-06-17T12:09:15.244923"
+}

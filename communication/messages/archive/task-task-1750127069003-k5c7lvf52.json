@@ -1,0 +1,20 @@
+{
+  "id": "task-task-1750127069003-k5c7lvf52",
+  "type": "task_request",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T02:24:29.006Z",
+  "data": {
+    "id": "task-1750127069003-k5c7lvf52",
+    "title": "リアルタイムで更新されたか",
+    "description": "",
+    "projectId": "project-1750099751963",
+    "priority": "medium",
+    "tags": [],
+    "requirements": "",
+    "acceptanceCriteria": "",
+    "status": "pending",
+    "createdAt": "2025-06-17T02:24:29.003Z",
+    "updatedAt": "2025-06-17T02:24:29.003Z"
+  }
+}

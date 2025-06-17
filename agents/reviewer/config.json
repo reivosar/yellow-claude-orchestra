@@ -1,0 +1,14 @@
+{
+  "role": "reviewer",
+  "priority": "medium",
+  "auto_start": false,
+  "startup_delay": 10,
+  "memory_limit": "2GB",
+  "timeout": 300,
+  "retry_count": 2,
+  "working_directory": "./agents/reviewer",
+  "environment_variables": {
+    "AGENT_ROLE": "reviewer",
+    "LOG_LEVEL": "INFO"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750129360081-hbk8tebkf-1750158504936",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T11:08:24.936Z",
+  "data": {
+    "taskId": "task-1750129360081-hbk8tebkf",
+    "message": "うごかねえ",
+    "action": "append_message"
+  }
+}

@@ -1,0 +1,128 @@
+import React, { useState } from 'react'
+
+interface QuickTaskFormProps {
+  onSubmit: (task: { title: string; description: string }) => void
+  isSubmitting?: boolean
+  projectName?: string
+}
+
+export function QuickTaskForm({ onSubmit, isSubmitting = false, projectName }: QuickTaskFormProps) {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [showDescription, setShowDescription] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('QuickTaskForm送信:', { title, description })
+    if (!title.trim()) {
+      console.log('タイトルが空のため送信中止')
+      return
+    }
+    
+    console.log('onSubmit呼び出し')
+    onSubmit({
+      title: title.trim(),
+      description: description.trim()
+    })
+    
+    setTitle('')
+    setDescription('')
+    setShowDescription(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault()
+      handleSubmit(e as any)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-4">
+        {/* タイトル入力 */}
+        <div>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="何を作りたいですか？ (例: GitHubのイシュー一覧を表示して)"
+            className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            disabled={isSubmitting}
+            autoFocus
+          />
+        </div>
+
+        {/* 説明入力 */}
+        {showDescription && (
+          <div>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="詳細があれば記載してください（任意）"
+              rows={3}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              disabled={isSubmitting}
+            />
+          </div>
+        )}
+
+        {/* アクションボタン */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {!showDescription && (
+              <button
+                type="button"
+                onClick={() => setShowDescription(true)}
+                className="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                disabled={isSubmitting}
+              >
+                + 詳細を追加
+              </button>
+            )}
+            <span className="text-xs text-gray-500">
+              ⌘+Enter で送信
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {showDescription && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDescription(false)
+                  setDescription('')
+                }}
+                className="btn btn-secondary"
+                disabled={isSubmitting}
+              >
+                キャンセル
+              </button>
+            )}
+            <button
+              type="submit"
+              disabled={!title.trim() || isSubmitting}
+              className="btn btn-primary flex items-center gap-2 px-6"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  送信中...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                  </svg>
+                  依頼する
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  )
+}

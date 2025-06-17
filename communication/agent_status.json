@@ -1,0 +1,11 @@
+[
+  {
+    "id": "task-processor",
+    "type": "system",
+    "name": "Task Processor",
+    "status": "active",
+    "currentTask": "タスク処理システム稼働中",
+    "lastSeen": "2025-06-17T23:51:07.208270",
+    "pid": 29830
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750128536509-jqgy5rwjy-1750128830387",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T02:53:50.387Z",
+  "data": {
+    "taskId": "task-1750128536509-jqgy5rwjy",
+    "message": "ふざけてるの？",
+    "action": "append_message"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750100299772",
+  "from": "producer",
+  "to": "director",
+  "type": "task_completion",
+  "data": {
+    "result": "タスク 'テストメッセージ' を処理しました。\n説明: ",
+    "message": "タスク 'テストメッセージ' を処理しました。\n説明: "
+  },
+  "timestamp": "2025-06-17T03:58:19.772929"
+}

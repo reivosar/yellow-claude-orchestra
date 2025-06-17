@@ -1,0 +1,9 @@
+# Yellow Claude Orchestra Dependencies
+requests>=2.28.0          # HTTP通信
+psutil>=5.9.0            # システム監視
+GitPython>=3.1.30        # Git操作
+PyGithub>=1.58.0         # GitHub API
+click>=8.1.0             # CLI作成
+rich>=13.0.0             # 美しいコンソール出力
+watchdog>=3.0.0          # ファイル監視
+asyncio-mqtt>=0.13.0     # 非同期通信（オプション）

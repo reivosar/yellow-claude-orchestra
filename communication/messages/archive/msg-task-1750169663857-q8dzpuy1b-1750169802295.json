@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750169663857-q8dzpuy1b-1750169802295",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-17T14:16:42.295Z",
+  "data": {
+    "taskId": "task-1750169663857-q8dzpuy1b",
+    "message": "え？",
+    "action": "append_message"
+  }
+}

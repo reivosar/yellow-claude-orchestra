@@ -1,0 +1,10 @@
+{
+  "id": "msg-1750127504409",
+  "from": "director",
+  "to": "actor",
+  "type": "task_execution",
+  "data": {
+    "task": "あ？"
+  },
+  "timestamp": "2025-06-17T11:31:44.409992"
+}

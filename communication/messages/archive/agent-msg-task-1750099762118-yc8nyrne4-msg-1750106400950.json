@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750106400950",
+  "from": "director",
+  "to": "producer",
+  "type": "task_completion",
+  "data": {
+    "result": "GitHubイシューの一覧:\n\n#251653: Feature Request: Copilot Terminal Awareness for Long-Running or Error-Prone Commands (open)\n#251652: [Accessibility] Significant Screen Reader Lag in Integrated Terminal Output (open)\n#251651: PowerShell 5.1 (x64) fails to start in VS Code 1.101.0 (open)\n#251650: VSCode 1.101 is injecting numerical environment variables into my remote linux Terminal environments, with the characters for \"JSON.stringify(process.env)\" (open)\n#251649: Introduce auth-provider specific props & use it for social sign in for GitHub (open)\n#251648: Enabling \"provider specific\" session parameters (open)\n#251647: Razor Components unrecognized when editing with Copilot Agent (open)\n#251646: Copy/paste doesn't work properly in Jupyter notebooks (open)\n#251645: Border around chat tag is cut off (open)\n#251644: Chat window is not preserved when cloning a repo (open)",
+    "message": "GitHubイシューの一覧:\n\n#251653: Feature Request: Copilot Terminal Awareness for Long-Running or Error-Prone Commands (open)\n#251652: [Accessibility] Significant Screen Reader Lag in Integrated Terminal Output (open)\n#251651: PowerShell 5.1 (x64) fails to start in VS Code 1.101.0 (open)\n#251650: VSCode 1.101 is injecting numerical environment variables into my remote linux Terminal environments, with the characters for \"JSON.stringify(process.env)\" (open)\n#251649: Introduce auth-provider specific props & use it for social sign in for GitHub (open)\n#251648: Enabling \"provider specific\" session parameters (open)\n#251647: Razor Components unrecognized when editing with Copilot Agent (open)\n#251646: Copy/paste doesn't work properly in Jupyter notebooks (open)\n#251645: Border around chat tag is cut off (open)\n#251644: Chat window is not preserved when cloning a repo (open)"
+  },
+  "timestamp": "2025-06-17T05:40:00.950726"
+}

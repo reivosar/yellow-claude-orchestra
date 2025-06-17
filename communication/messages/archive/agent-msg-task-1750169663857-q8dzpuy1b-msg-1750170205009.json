@@ -1,0 +1,11 @@
+{
+  "id": "msg-1750170205009",
+  "from": "director",
+  "to": "producer",
+  "type": "task_completion",
+  "data": {
+    "result": "GitHubイシューの一覧:\n\n#251712: Implements cancellationToken tracking (open)\n#251711: Не открывается диалог выбора vsix (open)\n#251710: Run command confirmation can have some UX styling (open)\n#251709: Failed to connect to the remote extension host server (Error: CodeError(AsyncPipeFailed(Os { code: 2, kind: NotFound, message: \"No such file or directory\" }))) (open)\n#251708: codespace editor error (open)\n#251707: Cannot install VSCode Server (open)\n#251706: Update package.nls.json (open)\n#251705: remove split option from dedicated tab (open)\n#251704: Code Generation Instructions Not Working in Dev Containers (open)\n#251703: Issue Reporter - Add more information to the submission form (i.e. submitting Username and target repository) (open)",
+    "message": "GitHubイシューの一覧:\n\n#251712: Implements cancellationToken tracking (open)\n#251711: Не открывается диалог выбора vsix (open)\n#251710: Run command confirmation can have some UX styling (open)\n#251709: Failed to connect to the remote extension host server (Error: CodeError(AsyncPipeFailed(Os { code: 2, kind: NotFound, message: \"No such file or directory\" }))) (open)\n#251708: codespace editor error (open)\n#251707: Cannot install VSCode Server (open)\n#251706: Update package.nls.json (open)\n#251705: remove split option from dedicated tab (open)\n#251704: Code Generation Instructions Not Working in Dev Containers (open)\n#251703: Issue Reporter - Add more information to the submission form (i.e. submitting Username and target repository) (open)"
+  },
+  "timestamp": "2025-06-17T23:23:25.009133"
+}

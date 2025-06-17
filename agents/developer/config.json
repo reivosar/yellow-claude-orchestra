@@ -1,0 +1,14 @@
+{
+  "role": "developer",
+  "priority": "high",
+  "auto_start": true,
+  "startup_delay": 5,
+  "memory_limit": "4GB",
+  "timeout": 600,
+  "retry_count": 2,
+  "working_directory": "./agents/developer",
+  "environment_variables": {
+    "AGENT_ROLE": "developer",
+    "LOG_LEVEL": "DEBUG"
+  }
+}

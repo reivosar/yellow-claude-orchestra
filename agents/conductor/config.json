@@ -1,0 +1,14 @@
+{
+  "role": "conductor",
+  "priority": "high",
+  "auto_start": true,
+  "startup_delay": 0,
+  "memory_limit": "2GB",
+  "timeout": 300,
+  "retry_count": 3,
+  "working_directory": "./agents/conductor",
+  "environment_variables": {
+    "AGENT_ROLE": "conductor",
+    "LOG_LEVEL": "INFO"
+  }
+}

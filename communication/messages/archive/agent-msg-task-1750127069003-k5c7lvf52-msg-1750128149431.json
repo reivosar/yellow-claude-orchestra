@@ -1,0 +1,10 @@
+{
+  "id": "msg-1750128149431",
+  "from": "actor",
+  "to": "director",
+  "type": "task_result",
+  "data": {
+    "result": "こんにちは！何かお手伝いできることはありますか？"
+  },
+  "timestamp": "2025-06-17T11:42:29.431986"
+}

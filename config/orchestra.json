@@ -1,0 +1,57 @@
+{
+  "system": {
+    "name": "Yellow Claude Orchestra",
+    "version": "2.0.0",
+    "model": "Producer-Director-Actor",
+    "max_actors": 7,
+    "communication_dir": "./communication",
+    "projects_dir": "./projects"
+  },
+  "roles": {
+    "producer": {
+      "description": "ユーザーとの窓口、要件聞き取り、issue作成",
+      "capabilities": ["requirement_analysis", "issue_creation", "project_management"],
+      "auto_start": true,
+      "priority": "critical"
+    },
+    "director": {
+      "description": "優先度管理、タスク割り当て、レビュー",
+      "capabilities": ["task_management", "code_review", "quality_assurance"],
+      "auto_start": true,
+      "priority": "high"
+    },
+    "actor": {
+      "description": "実装作業、先着順でタスク処理",
+      "capabilities": ["coding", "debugging", "testing", "documentation"],
+      "auto_start": true,
+      "priority": "medium",
+      "max_instances": 7
+    }
+  },
+  "workflows": {
+    "standard_development": {
+      "steps": [
+        "requirement_gathering",
+        "issue_creation", 
+        "task_assignment",
+        "implementation",
+        "review",
+        "integration"
+      ]
+    },
+    "hotfix": {
+      "steps": [
+        "issue_analysis",
+        "urgent_implementation",
+        "quick_review",
+        "deployment"
+      ]
+    }
+  },
+  "github": {
+    "auto_create_issues": true,
+    "auto_create_prs": true,
+    "review_required": true,
+    "max_review_attempts": 3
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "msg-task-1750099762118-yc8nyrne4-1750106353230",
+  "type": "task_update",
+  "from": "web_dashboard",
+  "to": "producer",
+  "timestamp": "2025-06-16T20:39:13.230Z",
+  "data": {
+    "taskId": "task-1750099762118-yc8nyrne4",
+    "message": "SafeSyのGitHubイシューを確認してください",
+    "action": "append_message"
+  }
+}
