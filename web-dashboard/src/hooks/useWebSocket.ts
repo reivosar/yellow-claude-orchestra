@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { AgentLog, AgentStatus } from '@/types/agent'
 
@@ -7,14 +7,54 @@ interface UseWebSocketReturn {
   agents: AgentStatus[]
   isConnected: boolean
   connectionError: string | null
+  sendMessage?: (data: any) => boolean
 }
 
-export function useWebSocket(): UseWebSocketReturn {
+interface WebSocketMessage {
+  type: string
+  [key: string]: any
+}
+
+interface WebSocketOptions {
+  onMessage?: (data: WebSocketMessage) => void
+  onConnect?: () => void
+  onDisconnect?: () => void
+  onError?: (error: Event) => void
+  reconnectInterval?: number
+  maxReconnectAttempts?: number
+}
+
+export function useWebSocket(url?: string, options?: WebSocketOptions): UseWebSocketReturn {
   const [logs, setLogs] = useState<AgentLog[]>([])
   const [agents, setAgents] = useState<AgentStatus[]>([])
   const [isConnected, setIsConnected] = useState(false)
   const [connectionError, setConnectionError] = useState<string | null>(null)
   const socketRef = useRef<Socket | null>(null)
+  const wsRef = useRef<WebSocket | null>(null)
+  
+  // チャット用のメッセージ送信関数
+  const sendMessage = useCallback((data: WebSocketMessage) => {
+    if (socketRef.current?.connected) {
+      try {
+        socketRef.current.emit('message', data)
+        return true
+      } catch (error) {
+        console.error('Failed to send message via Socket.IO:', error)
+        return false
+      }
+    } else if (wsRef.current?.readyState === WebSocket.OPEN) {
+      try {
+        wsRef.current.send(JSON.stringify(data))
+        return true
+      } catch (error) {
+        console.error('Failed to send message via WebSocket:', error)
+        return false
+      }
+    } else {
+      console.warn('No active connection available to send message:', data)
+      return false
+    }
+  }, [])
 
   useEffect(() => {
     let reconnectTimeout: NodeJS.Timeout | null = null
@@ -145,6 +185,53 @@ export function useWebSocket(): UseWebSocketReturn {
           }
         })
 
+        // チャット用メッセージ受信
+        socket.on('message', (data: WebSocketMessage) => {
+          try {
+            options?.onMessage?.(data)
+          } catch (error) {
+            console.error('チャットメッセージ受信処理エラー:', error)
+          }
+        })
+
+        // チャット用のWebSocket接続（URLが指定された場合）
+        if (url && options) {
+          const wsUrl = url.startsWith('ws') 
+            ? url 
+            : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}${url}`
+
+          try {
+            const ws = new WebSocket(wsUrl)
+            wsRef.current = ws
+
+            ws.onopen = () => {
+              console.log('Chat WebSocket connected:', wsUrl)
+              options.onConnect?.()
+            }
+
+            ws.onmessage = (event) => {
+              try {
+                const data = JSON.parse(event.data)
+                options.onMessage?.(data)
+              } catch (error) {
+                console.error('Failed to parse WebSocket message:', error)
+              }
+            }
+
+            ws.onclose = () => {
+              console.log('Chat WebSocket disconnected')
+              options.onDisconnect?.()
+            }
+
+            ws.onerror = (error) => {
+              console.error('Chat WebSocket error:', error)
+              options.onError?.(error)
+            }
+          } catch (error) {
+            console.error('Failed to create chat WebSocket:', error)
+          }
+        }
+
       } catch (error) {
         console.error('WebSocket初期化エラー:', error)
         setConnectionError('WebSocketの初期化に失敗しました')
@@ -170,6 +257,11 @@ export function useWebSocket(): UseWebSocketReturn {
       if (socketRef.current) {
         socketRef.current.disconnect()
         socketRef.current = null
+      }
+      
+      if (wsRef.current) {
+        wsRef.current.close()
+        wsRef.current = null
       }
     }
   }, [])
@@ -205,6 +297,7 @@ export function useWebSocket(): UseWebSocketReturn {
     logs,
     agents,
     isConnected,
-    connectionError
+    connectionError,
+    sendMessage
   }
 }
