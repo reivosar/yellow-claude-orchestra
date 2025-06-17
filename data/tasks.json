@@ -366,6 +366,20 @@
       "createdAt": "2025-06-17T20:03:12.413Z",
       "updatedAt": "2025-06-18T05:03:28.589511",
       "assignedAgent": "task-processor"
+    },
+    {
+      "id": "task-1750191118019-mlw42yfkd",
+      "title": "あいうえお",
+      "description": "あいうえお",
+      "projectId": "project-1750099751963",
+      "priority": "medium",
+      "tags": [],
+      "requirements": "",
+      "acceptanceCriteria": "",
+      "status": "in_progress",
+      "createdAt": "2025-06-17T20:11:58.019Z",
+      "updatedAt": "2025-06-18T05:12:14.804382",
+      "assignedAgent": "task-processor"
     }
   ]
 }

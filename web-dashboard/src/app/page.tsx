@@ -228,7 +228,7 @@ function DashboardContent() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          title: taskData.title || taskData.description, // タイトルが無い場合は説明を使用（APIでAI生成される）
+          title: taskData.title, // タイトルはオプション（APIでAI生成される）
           description: taskData.description,
           projectId: selectedProject.id,
           priority: 'medium',

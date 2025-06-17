@@ -141,8 +141,9 @@ export async function POST(request: NextRequest) {
     // 新しいタスクを作成
     const task: Task = {
       id: `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      ...body,
+      projectId: body.projectId,
       title, // AI生成されたタイトルを使用
+      description: body.description || title, // 説明がない場合はタイトルを使用
       status: 'pending',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
