@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  yellow-claude-orchestra:
+    build: .
+    container_name: yellow-claude-orchestra
+    ports:
+      - "3000:3000"  # Web dashboard
+      - "8765:8765"  # WebSocket bridge
+    environment:
+      - NODE_ENV=production
+      - PYTHONUNBUFFERED=1
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    volumes:
+      # Persist data and communication
+      - ./data:/app/data
+      - ./communication/messages:/app/communication/messages
+      - ./communication/logs:/app/communication/logs
+      # Mount workspace for cloned repositories
+      - workspace_data:/app/workspace:rw
+      # Mount Claude Code config (if exists)
+      - ~/.config/claude-code:/root/.config/claude-code:ro
+      # Mount SSH keys for git operations (if exists)
+      - ~/.ssh:/root/.ssh:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - yellow-claude-network
+
+  # Optional: Redis for caching (if needed later)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: yellow-claude-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+  #   networks:
+  #     - yellow-claude-network
+
+volumes:
+  app_data:
+  workspace_data:
+
+networks:
+  yellow-claude-network:
+    driver: bridge

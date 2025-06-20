@@ -88,6 +88,10 @@ class TaskProcessor:
         if 'github' in task_title.lower() or 'イシュー' in task_title or 'status' in task_title.lower():
             return self.handle_github_request(task_title, task_data)
         
+        # コード修正タスクを検出
+        if self.is_code_modification_task(task_title, task_description):
+            return self.handle_code_modification_task(task_title, task_description, task_data)
+        
         # Claude Code CLIコマンドを構築
         claude_cmd = ['claude', f"「{task_title}」について教えてください。"]
         if task_description:
@@ -112,6 +116,127 @@ class TaskProcessor:
             result = f"「{task_title}」について処理中です。しばらくお待ちください。"
         
         return result
+
+    def is_code_modification_task(self, task_title, task_description=None):
+        """タスクがコード修正に関するものかを判定"""
+        code_keywords = [
+            '修正', 'fix', 'bug', 'バグ', 'エラー', 'error', 
+            '実装', 'implement', '追加', 'add', '機能', 'feature',
+            '改善', 'improve', 'リファクタ', 'refactor', 'コード', 'code'
+        ]
+        
+        text_to_check = f"{task_title} {task_description or ''}".lower()
+        return any(keyword in text_to_check for keyword in code_keywords)
+
+    def handle_code_modification_task(self, task_title, task_description=None, task_data=None):
+        """コード修正タスクを処理"""
+        try:
+            # プロジェクト情報からリポジトリURLを取得
+            repo_url = self.get_repository_url_from_task(task_data)
+            
+            if repo_url:
+                # リポジトリをクローンまたは更新
+                workspace_path = self.clone_or_update_repository(repo_url)
+                
+                if workspace_path:
+                    # Claude Code CLIでコード修正を実行
+                    return self.execute_claude_code_in_workspace(workspace_path, task_title, task_description)
+            
+            # フォールバック: 通常の応答
+            return f"「{task_title}」のコード修正について検討中です。リポジトリ情報を確認してください。"
+            
+        except Exception as e:
+            print(f"Error handling code modification task: {e}")
+            return f"「{task_title}」の処理中にエラーが発生しました。"
+
+    def get_repository_url_from_task(self, task_data=None):
+        """タスクからリポジトリURLを取得（プロジェクト設定から）"""
+        try:
+            # タスクデータからプロジェクトIDを取得
+            project_id = None
+            if task_data and 'projectId' in task_data:
+                project_id = task_data['projectId']
+            
+            projects_file = self.base_dir / 'data' / 'projects.json'
+            if projects_file.exists():
+                with open(projects_file, 'r', encoding='utf-8') as f:
+                    projects = json.load(f)
+                    
+                    # 特定のプロジェクトIDがある場合はそれを優先
+                    if project_id:
+                        for project in projects:
+                            if project.get('id') == project_id:
+                                return project.get('repository')
+                    
+                    # 最初のアクティブプロジェクトのリポジトリを使用
+                    for project in projects:
+                        if project.get('status') == 'active' and project.get('repository'):
+                            return project.get('repository')
+        except Exception as e:
+            print(f"Error getting repository URL: {e}")
+        return None
+
+    def clone_or_update_repository(self, repo_url):
+        """リポジトリをクローンまたは更新"""
+        import os
+        
+        try:
+            # ワークスペースディレクトリ
+            workspace_dir = Path('/app/workspace')
+            
+            # リポジトリ名を抽出
+            repo_name = repo_url.split('/')[-1].replace('.git', '')
+            repo_path = workspace_dir / repo_name
+            
+            if repo_path.exists():
+                # 既存のリポジトリを更新
+                result = subprocess.run(['git', 'pull'], cwd=repo_path, capture_output=True, text=True)
+                if result.returncode == 0:
+                    print(f"Updated repository: {repo_path}")
+                    return str(repo_path)
+            else:
+                # リポジトリをクローン
+                result = subprocess.run(['git', 'clone', repo_url, str(repo_path)], 
+                                      capture_output=True, text=True)
+                if result.returncode == 0:
+                    print(f"Cloned repository: {repo_path}")
+                    return str(repo_path)
+                
+        except Exception as e:
+            print(f"Error cloning/updating repository: {e}")
+        
+        return None
+
+    def execute_claude_code_in_workspace(self, workspace_path, task_title, task_description=None):
+        """ワークスペース内でClaude Code CLIを実行"""
+        import os
+        
+        try:
+            # Claude Code CLIコマンドを構築
+            prompt = f"プロジェクト「{task_title}」について"
+            if task_description:
+                prompt += f": {task_description}"
+            prompt += "。必要に応じてコードを修正してください。"
+            
+            claude_cmd = ['claude', prompt]
+            
+            # ワークスペース内でClaude Code CLIを実行
+            result = subprocess.check_output(
+                claude_cmd, 
+                cwd=workspace_path,
+                text=True, 
+                timeout=30, 
+                stderr=subprocess.STDOUT,
+                env={**os.environ, 'PATH': '/root/.local/bin:' + os.environ.get('PATH', '')}
+            )
+            
+            return f"コード修正を実行しました:\n{result.strip()}"
+            
+        except subprocess.TimeoutExpired:
+            return f"「{task_title}」のコード修正がタイムアウトしました。大きな変更の可能性があります。"
+        except Exception as e:
+            print(f"Error executing Claude Code in workspace: {e}")
+            return f"「{task_title}」のコード修正中にエラーが発生しました: {str(e)}"
     
     def handle_github_request(self, task_title, task_data):
         """GitHub関連のリクエストを処理"""
