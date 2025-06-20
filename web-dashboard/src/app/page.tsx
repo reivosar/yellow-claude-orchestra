@@ -25,6 +25,9 @@ interface Task {
   description: string
   status: 'pending' | 'in_progress' | 'in_review' | 'completed' | 'rejected'
   priority: 'low' | 'medium' | 'high'
+  tags: string[]
+  requirements: string
+  acceptanceCriteria: string
   assignedAgent?: string
   createdAt: string
   updatedAt: string
@@ -251,6 +254,9 @@ function DashboardContent() {
           description: result.task.description,
           status: 'pending',
           priority: 'medium',
+          tags: result.task.tags || [],
+          requirements: result.task.requirements || '',
+          acceptanceCriteria: result.task.acceptanceCriteria || '',
           createdAt: result.task.createdAt,
           updatedAt: result.task.updatedAt,
           projectId: selectedProject.id

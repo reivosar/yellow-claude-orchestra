@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { memo, useCallback } from 'react'
+import { FixedSizeList as List } from 'react-window'
 
 interface TaskTimelineItem {
   id: string
@@ -18,7 +19,7 @@ interface TaskTimelineProps {
   onChatOpen?: (task: TaskTimelineItem) => void
 }
 
-export function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelineProps) {
+const TaskTimeline = memo(function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelineProps) {
   const getStatusIcon = (status: TaskTimelineItem['status']) => {
     switch (status) {
       case 'pending':
@@ -115,35 +116,11 @@ export function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelinePro
     }
   }
 
-  if (tasks.length === 0) {
+  const renderTaskItem = useCallback((task: TaskTimelineItem, index: number, tasks: TaskTimelineItem[]) => {
     return (
-      <div className="text-center py-12">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          タスクがありません
-        </h3>
-        <p className="text-gray-500">
-          上のフォームから最初のタスクを作成しましょう
-        </p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        タスクの進行状況
-      </h2>
-      
-      <div className="space-y-3">
-        {tasks.map((task, index) => (
           <div
             key={task.id}
-            onClick={() => onTaskClick?.(task.id)}
+            onClick={useCallback(() => onTaskClick?.(task.id), [onTaskClick, task.id])}
             className={`
               card p-4 border-l-4 cursor-pointer transition-all hover:shadow-md
               ${getPriorityColor(task.priority)}
@@ -165,12 +142,6 @@ export function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelinePro
                   </time>
                 </div>
 
-                {/* 説明 */}
-                {task.description && (
-                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                    {task.description}
-                  </p>
-                )}
 
                 {/* ステータスと担当者 */}
                 <div className="flex items-center justify-between">
@@ -216,10 +187,10 @@ export function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelinePro
                 {(task.status === 'pending' || task.status === 'in_progress') && onChatOpen && (
                   <div className="mt-3">
                     <button
-                      onClick={(e) => {
+                      onClick={useCallback((e: React.MouseEvent) => {
                         e.stopPropagation()
                         onChatOpen(task)
-                      }}
+                      }, [onChatOpen, task])}
                       className="btn btn-sm btn-primary flex items-center gap-2"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,8 +203,54 @@ export function TaskTimeline({ tasks, onTaskClick, onChatOpen }: TaskTimelinePro
               </div>
             </div>
           </div>
-        ))}
+        )
+  }, [onTaskClick, onChatOpen])
+
+  if (tasks.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          タスクがありません
+        </h3>
+        <p className="text-gray-500">
+          上のフォームから最初のタスクを作成しましょう
+        </p>
       </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        タスクの進行状況
+      </h2>
+      
+      {tasks.length > 50 ? (
+        <List
+          height={600}
+          width="100%"
+          itemCount={tasks.length}
+          itemSize={120}
+          itemData={tasks}
+        >
+          {({ index, style, data }) => (
+            <div style={style}>
+              {renderTaskItem(data[index], index, data)}
+            </div>
+          )}
+        </List>
+      ) : (
+        <div className="space-y-3">
+          {tasks.map((task, index) => renderTaskItem(task, index, tasks))}
+        </div>
+      )}
     </div>
   )
-}
+})
+
+export { TaskTimeline }

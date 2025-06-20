@@ -467,7 +467,7 @@ export function ChatInterface({ taskId, taskTitle, onClose, theme = 'light' }: C
     setIsLoading(true)
 
     // WebSocketで送信を試行
-    if (isConnected) {
+    if (isConnected && sendMessage) {
       sendMessage({
         type: 'user_message',
         taskId,

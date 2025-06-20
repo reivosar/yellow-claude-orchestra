@@ -270,8 +270,7 @@ export function useWebSocket(url?: string, options?: WebSocketOptions): UseWebSo
   const initializeWebSocketServer = async () => {
     try {
       const response = await fetch('/api/websocket', { 
-        method: 'GET',
-        timeout: 10000 // 10秒タイムアウト
+        method: 'GET'
       })
       
       if (!response.ok) {

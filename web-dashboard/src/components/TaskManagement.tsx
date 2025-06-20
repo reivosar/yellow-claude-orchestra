@@ -23,6 +23,7 @@ interface Task {
   createdAt: string
   updatedAt: string
   githubIssueUrl?: string
+  result?: string
 }
 
 interface TaskManagementProps {
@@ -364,6 +365,10 @@ export function TaskManagement({ initialTask }: TaskManagementProps) {
       const aValue = a[sortConfig.key]
       const bValue = b[sortConfig.key]
       
+      if (aValue == null && bValue == null) return 0
+      if (aValue == null) return sortConfig.direction === 'asc' ? -1 : 1
+      if (bValue == null) return sortConfig.direction === 'asc' ? 1 : -1
+      
       if (aValue < bValue) {
         return sortConfig.direction === 'asc' ? -1 : 1
       }
@@ -524,6 +529,13 @@ export function TaskManagement({ initialTask }: TaskManagementProps) {
                             : 'エージェントがタスクを処理中です...'
                           }
                         </p>
+                        {/* タスク結果を表示 */}
+                        {selectedTask.status === 'completed' && selectedTask.result && (
+                          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <h4 className="text-sm font-medium text-green-800 mb-2">タスク完了結果:</h4>
+                            <p className="text-sm text-green-700">{selectedTask.result}</p>
+                          </div>
+                        )}
                       </div>
                     )
                   }

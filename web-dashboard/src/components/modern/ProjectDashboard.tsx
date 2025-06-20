@@ -17,6 +17,9 @@ interface Task {
   description: string
   status: 'pending' | 'in_progress' | 'in_review' | 'completed' | 'rejected'
   priority: 'low' | 'medium' | 'high'
+  tags: string[]
+  requirements: string
+  acceptanceCriteria: string
   assignedAgent?: string
   createdAt: string
   updatedAt: string

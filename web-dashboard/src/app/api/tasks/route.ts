@@ -144,6 +144,10 @@ export async function POST(request: NextRequest) {
       projectId: body.projectId,
       title, // AI生成されたタイトルを使用
       description: body.description || title, // 説明がない場合はタイトルを使用
+      priority: body.priority || 'medium',
+      tags: body.tags || [],
+      requirements: body.requirements || '',
+      acceptanceCriteria: body.acceptanceCriteria || '',
       status: 'pending',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
